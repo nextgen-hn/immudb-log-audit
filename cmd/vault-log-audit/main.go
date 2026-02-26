@@ -17,7 +17,7 @@ limitations under the License.
 package main
 
 import (
-	"github.com/codenotary/immudb-log-audit/cmd/vault-log-audit/cmd"
+	"github.com/nextgen-hn/immudb-log-audit/cmd/vault-log-audit/cmd"
 )
 
 func main() {

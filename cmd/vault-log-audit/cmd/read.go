@@ -19,7 +19,7 @@ package cmd
 import (
 	"fmt"
 
-	"github.com/codenotary/immudb-log-audit/pkg/repository/vault"
+	"github.com/nextgen-hn/immudb-log-audit/pkg/repository/vault"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )

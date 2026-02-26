@@ -23,10 +23,10 @@ import (
 	"os/signal"
 	"syscall"
 
-	cmdutils "github.com/codenotary/immudb-log-audit/pkg/cmd"
-	"github.com/codenotary/immudb-log-audit/pkg/repository/vault"
-	"github.com/codenotary/immudb-log-audit/pkg/service"
-	"github.com/codenotary/immudb-log-audit/pkg/source"
+	cmdutils "github.com/nextgen-hn/immudb-log-audit/pkg/cmd"
+	"github.com/nextgen-hn/immudb-log-audit/pkg/repository/vault"
+	"github.com/nextgen-hn/immudb-log-audit/pkg/service"
+	"github.com/nextgen-hn/immudb-log-audit/pkg/source"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )

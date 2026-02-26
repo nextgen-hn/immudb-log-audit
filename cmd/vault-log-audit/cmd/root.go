@@ -25,9 +25,9 @@ import (
 	"strings"
 	"time"
 
-	vaultclient "github.com/codenotary/immudb-log-audit/pkg/client/vault"
-	"github.com/codenotary/immudb-log-audit/pkg/cmd"
 	"github.com/deepmap/oapi-codegen/pkg/securityprovider"
+	vaultclient "github.com/nextgen-hn/immudb-log-audit/pkg/client/vault"
+	"github.com/nextgen-hn/immudb-log-audit/pkg/cmd"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"

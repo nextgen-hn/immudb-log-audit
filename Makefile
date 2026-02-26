@@ -18,9 +18,9 @@ V_COMMIT ?= $(shell git rev-parse HEAD|head -c 7)
 V_BUILT_AT = $(shell date +%s)
 BUILD_TAG ?= $(shell git rev-parse HEAD|head -c 8)
 
-V_LDFLAGS = -X "github.com/codenotary/immudb-log-audit/cmd.Version=$(V_VERSION)"\
-	-X "github.com/codenotary/immudb-log-audit/cmd.BuildTime=$(V_BUILT_AT)"\
-	-X "github.com/codenotary/immudb-log-audit/cmd.Commit=$(V_COMMIT)"\
+V_LDFLAGS = -X "github.com/nextgen-hn/immudb-log-audit/cmd.Version=$(V_VERSION)"\
+	-X "github.com/nextgen-hn/immudb-log-audit/cmd.BuildTime=$(V_BUILT_AT)"\
+	-X "github.com/nextgen-hn/immudb-log-audit/cmd.Commit=$(V_COMMIT)"\
 
 REPO ?= codenotary
 IMAGE_TAG ?= $(REPO)/immudb-log-audit

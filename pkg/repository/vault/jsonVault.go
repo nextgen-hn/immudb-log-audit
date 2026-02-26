@@ -24,7 +24,7 @@ import (
 	"net/http"
 	"strconv"
 
-	vaultclient "github.com/codenotary/immudb-log-audit/pkg/client/vault"
+	vaultclient "github.com/nextgen-hn/immudb-log-audit/pkg/client/vault"
 	log "github.com/sirupsen/logrus"
 )
 

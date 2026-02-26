@@ -21,7 +21,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/codenotary/immudb-log-audit/pkg/repository/immudb"
+	"github.com/nextgen-hn/immudb-log-audit/pkg/repository/immudb"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )

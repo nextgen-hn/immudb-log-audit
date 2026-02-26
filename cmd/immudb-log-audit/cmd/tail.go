@@ -19,8 +19,8 @@ package cmd
 import (
 	"fmt"
 
-	"github.com/codenotary/immudb-log-audit/pkg/repository/immudb"
-	"github.com/codenotary/immudb-log-audit/pkg/service"
+	"github.com/nextgen-hn/immudb-log-audit/pkg/repository/immudb"
+	"github.com/nextgen-hn/immudb-log-audit/pkg/service"
 	"github.com/spf13/cobra"
 )
 

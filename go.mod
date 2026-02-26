@@ -1,4 +1,4 @@
-module github.com/codenotary/immudb-log-audit
+module github.com/nextgen-hn/immudb-log-audit
 
 go 1.25
 

@@ -6,13 +6,13 @@ import (
 	"log"
 	"time"
 
-	immuHttp "github.com/codenotary/immudb-log-audit/pkg/client/immudb"
 	immuCliHttp "github.com/codenotary/immudb/pkg/api/httpclient"
 	immudb "github.com/codenotary/immudb/pkg/client"
 	"github.com/docker/docker/api/types"
 	"github.com/docker/docker/api/types/container"
 	"github.com/docker/docker/client"
 	"github.com/docker/go-connections/nat"
+	immuHttp "github.com/nextgen-hn/immudb-log-audit/pkg/client/immudb"
 
 	"github.com/phayes/freeport"
 )

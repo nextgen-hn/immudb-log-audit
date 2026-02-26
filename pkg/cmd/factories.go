@@ -3,8 +3,8 @@ package cmd
 import (
 	"fmt"
 
-	"github.com/codenotary/immudb-log-audit/pkg/lineparser"
-	"github.com/codenotary/immudb-log-audit/pkg/service"
+	"github.com/nextgen-hn/immudb-log-audit/pkg/lineparser"
+	"github.com/nextgen-hn/immudb-log-audit/pkg/service"
 )
 
 func NewLineParser(name string) (service.LineParser, error) {

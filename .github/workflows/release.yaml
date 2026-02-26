@@ -1,0 +1,84 @@
+name: release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write  # needed to create the GitHub release and upload assets
+
+jobs:
+  build:
+    name: Build binaries (${{ matrix.goos }}/${{ matrix.goarch }})
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - goos: linux
+            goarch: amd64
+          # - goos: linux
+          #   goarch: arm64
+          # - goos: darwin
+          #   goarch: amd64
+          # - goos: darwin
+          #   goarch: arm64
+          # - goos: windows
+          #   goarch: amd64
+          #   ext: .exe
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version: "1.25"
+          cache: true
+          cache-dependency-path: go.sum
+
+      - name: Build binaries
+        env:
+          GOOS: ${{ matrix.goos }}
+          GOARCH: ${{ matrix.goarch }}
+          CGO_ENABLED: "0"
+        run: |
+          VERSION=${{ github.ref_name }}
+          COMMIT=$(git rev-parse HEAD)
+          BUILT_AT=$(date +%s)
+          LDFLAGS="-X 'github.com/nextgen-hn/immudb-log-audit/cmd.Version=${VERSION}' \
+                   -X 'github.com/nextgen-hn/immudb-log-audit/cmd.Commit=${COMMIT}' \
+                   -X 'github.com/nextgen-hn/immudb-log-audit/cmd.BuildTime=${BUILT_AT}'"
+
+          go build -v -ldflags "${LDFLAGS}" \
+            -o vault-log-audit-${{ matrix.goos }}-${{ matrix.goarch }}${{ matrix.ext }} \
+            ./cmd/vault-log-audit/main.go
+
+          go build -v -ldflags "${LDFLAGS}" \
+            -o immudb-log-audit-${{ matrix.goos }}-${{ matrix.goarch }}${{ matrix.ext }} \
+            ./cmd/immudb-log-audit/main.go
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: binaries-${{ matrix.goos }}-${{ matrix.goarch }}
+          path: |
+            vault-log-audit-*
+            immudb-log-audit-*
+          retention-days: 1
+
+  release:
+    name: Create GitHub release
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: binaries-*
+          merge-multiple: true
+          path: dist/
+
+      - name: Create release and upload assets
+        uses: softprops/action-gh-release@v2
+        with:
+          generate_release_notes: true
+          files: dist/*

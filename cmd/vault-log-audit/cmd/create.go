@@ -20,8 +20,8 @@ import (
 	"encoding/json"
 	"fmt"
 
-	vaultclient "github.com/codenotary/immudb-log-audit/pkg/client/vault"
-	"github.com/codenotary/immudb-log-audit/pkg/repository/vault"
+	vaultclient "github.com/nextgen-hn/immudb-log-audit/pkg/client/vault"
+	"github.com/nextgen-hn/immudb-log-audit/pkg/repository/vault"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )
