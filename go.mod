@@ -1,6 +1,6 @@
 module github.com/codenotary/immudb-log-audit
 
-go 1.19
+go 1.25
 
 require (
 	github.com/codenotary/immudb v1.4.2-0.20230518063629-bddfbb19641c

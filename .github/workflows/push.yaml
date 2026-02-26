@@ -8,13 +8,59 @@ on:
     tags:
       - 'v*'
 
+permissions:
+  contents: read
+  packages: write
+
 jobs:
   build:
     name: build and push
     runs-on: ubuntu-latest
-    steps:  
-    - uses: actions/checkout@v3
+    steps:
+    - uses: actions/checkout@v4
 
-    - run: |
-        docker login -u "${{ secrets.REGISTRY_USER }}" -p "${{ secrets.REGISTRY_PASS }}"
-        make docker push
+    - name: Log in to GitHub Container Registry
+      uses: docker/login-action@v3
+      with:
+        registry: ghcr.io
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Resolve image tag
+      id: image_tag
+      run: |
+        if [[ "${{ github.ref_type }}" == "tag" ]]; then
+          echo "build_tag=${{ github.ref_name }}" >> "$GITHUB_OUTPUT"
+        else
+          echo "build_tag=$(git rev-parse HEAD | head -c 8)" >> "$GITHUB_OUTPUT"
+        fi
+        echo "v_version=${{ github.ref_name }}" >> "$GITHUB_OUTPUT"
+        echo "v_commit=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+        echo "v_built_at=$(date +%s)" >> "$GITHUB_OUTPUT"
+
+    - name: Build and push immudb-log-audit
+      run: |
+        make \
+          REPO=ghcr.io/${{ github.repository_owner }} \
+          BUILD_TAG=${{ steps.image_tag.outputs.build_tag }} \
+          V_VERSION=${{ steps.image_tag.outputs.v_version }} \
+          V_COMMIT=${{ steps.image_tag.outputs.v_commit }} \
+          V_BUILT_AT=${{ steps.image_tag.outputs.v_built_at }} \
+          immudb-docker immudb-push
+
+    # --- Prune old immudb-log-audit versions ---
+    - name: Prune old tagged immudb-log-audit (keep 5)
+      uses: actions/delete-package-versions@v5
+      with:
+        package-name: immudb-log-audit
+        package-type: container
+        min-versions-to-keep: 5
+        delete-only-untagged-versions: false
+
+    - name: Prune untagged immudb-log-audit (keep 2)
+      uses: actions/delete-package-versions@v5
+      with:
+        package-name: immudb-log-audit
+        package-type: container
+        min-versions-to-keep: 2
+        delete-only-untagged-versions: true

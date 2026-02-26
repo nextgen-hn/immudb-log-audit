@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-FROM golang:1.19-alpine as build
+FROM golang:1.25-alpine as build
 WORKDIR /src
 COPY . .
 RUN GOOS=linux GOARCH=amd64 go build -v -o immudb-log-audit ./cmd/immudb-log-audit/main.go

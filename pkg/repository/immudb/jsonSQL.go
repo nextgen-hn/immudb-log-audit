@@ -229,19 +229,15 @@ func (jr *JsonSQLRepository) History(query string) ([][]byte, error) {
 			return nil, err
 		}
 
+		for _, r := range res.Rows {
+			h = append(h, r.Values[1].GetBs())
+		}
+
 		if len(res.Rows) < 999 {
 			break
 		}
 
-		for _, r := range res.Rows {
-			if err != nil {
-				return nil, fmt.Errorf("error querying for row TX")
-			}
-
-			h = append(h, r.Values[1].GetBs())
-		}
-
-		if jr.columns[0].CType == "INTEGER" {
+		if jr.columns[0].CType == "INTEGER" || jr.columns[0].CType == "INTEGER AUTO_INCREMENT" {
 			page = fmt.Sprintf(" \"%s\" < %d ORDER BY \"%s\" DESC LIMIT 999;", jr.columns[0].Name, res.Rows[len(res.Rows)-1].Values[0].GetN(), jr.columns[0].Name)
 		} else if strings.HasPrefix(jr.columns[0].CType, "VARCHAR") {
 			page = fmt.Sprintf(" \"%s\" < '%s' ORDER BY \"%s\" DESC LIMIT 999;", jr.columns[0].Name, res.Rows[len(res.Rows)-1].Values[0].GetS(), jr.columns[0].Name)

@@ -148,4 +148,42 @@ func TestSQL(t *testing.T) {
 			}
 		})
 	}
+
+	type testHistoryData struct {
+		testName    string
+		shouldError bool
+		query       string
+		expectCount int
+	}
+
+	trh := []testHistoryData{
+		{
+			testName:    "History all rows including overwritten",
+			query:       "",
+			expectCount: 7, // testJSONs[0] and [1] both have index1="1"; SINCE TX 1 returns all historical rows
+		},
+		{
+			testName:    "History filtered by index1",
+			query:       "WHERE index1='1' SINCE TX 1 UNTIL NOW()",
+			expectCount: 2, // both versions of index1="1"
+		},
+	}
+
+	for _, tr := range trh {
+		tr := tr
+		t.Run(tr.testName, func(t *testing.T) {
+			h, err := jr.History(tr.query)
+			if tr.shouldError {
+				assert.Error(t, err)
+			} else {
+				assert.NoError(t, err)
+				assert.Len(t, h, tr.expectCount)
+				for _, raw := range h {
+					var received testJSON
+					assert.NoError(t, json.Unmarshal(raw, &received))
+					assert.NotEmpty(t, received.Index1)
+				}
+			}
+		})
+	}
 }

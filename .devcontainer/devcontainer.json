@@ -1,0 +1,32 @@
+{
+  "name": "immudb-log-audit-dev",
+  "build": {
+    "dockerfile": "Dockerfile",
+    "args": {
+      "VARIANT": "1.25-bookworm"
+    }
+  },
+  "workspaceFolder": "/workspace",
+  "mounts": [
+    "source=/var/run/docker.sock,target=/var/run/docker.sock,type=bind"
+  ],
+  // Configure tool-specific properties.
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "golang.go",
+        "mutantdino.resourcemonitor",
+        "ms-azuretools.vscode-docker"
+      ],
+      "settings": {
+        "go.toolsManagement.checkForUpdates": "local",
+        "go.useLanguageServer": true,
+        "go.gopath": "/go"
+      }
+    }
+  },
+  // Run commands after the container is created.
+  "postCreateCommand": "go mod download",
+  // Set the remote user to 'vscode' (non-root) for security
+  "remoteUser": "vscode"
+}
