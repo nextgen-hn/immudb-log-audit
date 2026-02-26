@@ -15,7 +15,7 @@ import (
 // of WriteTypeParser(collection, typ, parser); this test verifies the correct order
 // is preserved end-to-end.
 func TestWriteReadTypeParser(t *testing.T) {
-	immuCli, _, containerID := utils.RunImmudbContainer()
+	immuCli, containerID := utils.RunImmudbContainer()
 	defer utils.StopImmudbContainer(containerID)
 
 	cfg := NewConfigs(immuCli)

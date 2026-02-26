@@ -22,7 +22,7 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/docker/docker/api/types"
+	dockercontainer "github.com/docker/docker/api/types/container"
 	"github.com/docker/docker/client"
 )
 
@@ -41,7 +41,7 @@ func NewDockerTail(ctx context.Context, container string, follow bool, since str
 
 	cli.NegotiateAPIVersion(ctx)
 
-	reader, err := cli.ContainerLogs(ctx, container, types.ContainerLogsOptions{Follow: follow, Since: since, ShowStdout: showStdout, ShowStderr: showStderr})
+	reader, err := cli.ContainerLogs(ctx, container, dockercontainer.LogsOptions{Follow: follow, Since: since, ShowStdout: showStdout, ShowStderr: showStderr})
 	if err != nil {
 		return nil, fmt.Errorf("could not create docker logs reader: %w", err)
 	}

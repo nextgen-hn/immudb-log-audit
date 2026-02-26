@@ -1,0 +1,46 @@
+# Go build artifacts
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# Go test binary
+*.test
+
+# coverage profiles and temporary files
+cover.txt
+coverage.out
+
+# Output of the go coverage tool
+*.out
+
+# IDE/editor directories and files
+.vscode/
+.idea/
+*.swp
+*.tmp
+
+# vendor folder if used by modules
+/vendor/
+
+# container files
+*.tar
+
+# Docker
+docker-compose.override.yml
+
+# miscellaneous
+*.log
+
+# Binaries
+bin/
+
+# ignore local immudb container data
+immudb-data/
+
+# ignore go build cache
+/pkg/
+
+# ignore any generated files
+*_gen.go

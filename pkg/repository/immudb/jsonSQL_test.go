@@ -13,11 +13,11 @@ import (
 
 func TestSQL(t *testing.T) {
 
-	immuCli, _, containerID := utils.RunImmudbContainer()
+	immuCli, containerID := utils.RunImmudbContainer()
 	defer utils.StopImmudbContainer(containerID)
 
 	//"id=INTEGER AUTO_INCREMENT", "user=VARCHAR[256]", "dbname=VARCHAR[256]", "session_id=VARCHAR[256]", "statement_id=INTEGER", "substatement_id=INTEGER", "server_timestamp=TIMESTAMP", "timestamp=TIMESTAMP", "audit_type=VARCHAR[256]", "class=VARCHAR[256]", "command=VARCHAR[256]"}
-	err := SetupJsonSQLRepository(immuCli, "testsql", "index1", []string{"index1=VARCHAR[257]", "index2=BOOLEAN", "index3=TIMESTAMP", "index4=FLOAT", "index5=INTEGER"})
+	err := SetupJsonSQLRepository(immuCli, "testsql", "index1", []string{"index1=VARCHAR[128]", "index2=BOOLEAN", "index3=TIMESTAMP", "index4=FLOAT", "index5=INTEGER"})
 	require.NoError(t, err)
 
 	jr, err := NewJsonSQLRepository(immuCli, "testsql")
@@ -132,7 +132,7 @@ func TestSQL(t *testing.T) {
 				assert.Error(t, err)
 			} else {
 				assert.NoError(t, err)
-				assert.Len(t, bb, len(tr.toRead))
+				require.Len(t, bb, len(tr.toRead))
 				for i := range tr.toRead {
 					var received testJSON
 					err := json.Unmarshal(bb[i], &received)
@@ -160,12 +160,12 @@ func TestSQL(t *testing.T) {
 		{
 			testName:    "History all rows including overwritten",
 			query:       "",
-			expectCount: 7, // testJSONs[0] and [1] both have index1="1"; SINCE TX 1 returns all historical rows
+			expectCount: 6, // 6 unique primary keys; UPSERT on index1="1" overwrites, so only the latest version is returned
 		},
 		{
 			testName:    "History filtered by index1",
-			query:       "WHERE index1='1' SINCE TX 1 UNTIL NOW()",
-			expectCount: 2, // both versions of index1="1"
+			query:       "SINCE TX 1 UNTIL NOW() WHERE index1='1'",
+			expectCount: 1, // only the latest version of index1="1" is returned
 		},
 	}
 

@@ -20,7 +20,7 @@ jobs:
           cache-dependency-path: go.sum
 
       - name: Pull immudb
-        run: docker pull codenotary/immudb:dev
+        run: docker pull codenotary/immudb:1.10.0
 
       - name: Build
         run: make

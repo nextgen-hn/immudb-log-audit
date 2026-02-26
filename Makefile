@@ -53,6 +53,7 @@ immudb-log-audit:
 
 .PHONY: test
 test:
+	docker pull codenotary/immudb:1.10.0
 	$(GO) test -coverprofile cover.txt -v ./...
 
 .PHONY: immudb-docker immudb-push
